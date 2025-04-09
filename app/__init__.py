@@ -9,7 +9,7 @@ def create_app():
 
     # (Optional) Set up ngrok to expose your local server publicly
     from pyngrok import ngrok
-    ngrok.set_auth_token("your_ngrok_authtoken_here")
+    ngrok.set_auth_token("2uarnvaygW75bBBGIEMG3ZOPqB2_ChDfLvvQHhBzoAQpfptp")
     public_url = ngrok.connect(5001).public_url
     print(f"Public URL: {public_url}")
 
