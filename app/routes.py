@@ -1,6 +1,6 @@
 # app/routes.py
 from flask import Blueprint, jsonify, request
-from app.firebase_config import db  # Import Firestore client from firebase_config
+from app.firebase_config import db  # Import Firestore client
 
 main = Blueprint("main", __name__)
 
@@ -8,10 +8,10 @@ main = Blueprint("main", __name__)
 def home():
     return jsonify({"message": "Flask backend with Firebase is running on port 5001!"})
 
-@main.route('/add-task', methods=['POST'])
+@main.route('/api/add-task', methods=['POST'])
 def add_task():
     data = request.get_json()
-    # Create a new document with an auto-generated ID in the "tasks" collection
+    # Create a new document with an auto-generated ID
     doc_ref = db.collection('tasks').document()
     task = {
         "title": data["title"],
@@ -19,16 +19,15 @@ def add_task():
         "priority": data.get("priority", "Low"),
         "completed": False
     }
-    # Save the task data to Firestore
+    # Save to Firestore
     doc_ref.set(task)
-    # Add the generated ID to the task dictionary
     task["id"] = doc_ref.id
     return jsonify({"message": "Task added!", "task": task}), 201
 
-@main.route('/tasks', methods=['GET'])
+@main.route('/api/tasks', methods=['GET'])
 def list_tasks():
     tasks = []
-    # Retrieve all tasks from the "tasks" collection
+    # Retrieve all tasks
     for doc in db.collection('tasks').stream():
         task_data = doc.to_dict()
         task_data["id"] = doc.id
